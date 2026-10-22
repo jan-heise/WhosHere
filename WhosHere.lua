@@ -38,11 +38,16 @@ local members = {}
 
 local function CollectMembers(zone)
     wipe(members)
-    local me = UnitName("player")
+    local myName = strlower((strsplit("-", (UnitName("player")))))
+    local myGUID = UnitGUID("player")
     for i = 1, GetNumGuildMembers() do
-        local name, _, _, level, class, memberZone, _, _, online, _, classFile = GetGuildRosterInfo(i)
-        if online and memberZone == zone and name and Ambiguate(name, "short") ~= me then
-            members[#members + 1] = { name = Ambiguate(name, "short"), level = level, class = class, classFile = classFile }
+        local name, _, _, level, class, memberZone, _, _, online, _, classFile, _, _, _, _, guid = GetGuildRosterInfo(i)
+        if online and memberZone == zone and name then
+            local short = strsplit("-", name)
+            local isMe = (guid and guid == myGUID) or strlower(short) == myName
+            if not isMe then
+                members[#members + 1] = { name = short, level = level, class = class, classFile = classFile }
+            end
         end
     end
     table.sort(members, function(a, b) return a.name < b.name end)
@@ -60,7 +65,10 @@ local function Show()
     if not zone or zone == "" then return end
     CollectMembers(zone)
     local count = #members
-    if count < 1 then return end
+    if count < 1 then
+        f:Hide()
+        return
+    end
     Anchor()
     text:SetText(string.format(count == 1 and L.one or L.many, count))
     elapsed = 0
@@ -107,6 +115,7 @@ f:SetScript("OnEvent", function(self, event)
         if pending then Show() end
         return
     end
+    f:Hide()
     if not IsInGuild() then return end
     pending = true
     RequestRoster()
