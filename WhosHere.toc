@@ -1,0 +1,9 @@
+﻿## Interface: 16001
+## Title: Who's here?
+## Notes: Shows the number of guild members in your current zone when you enter
+## Author: Cricksu
+## Version: 1.0.0
+## Category: Social
+## IconTexture: Interface\AddOns\WhosHere\icon
+
+WhosHere.lua
