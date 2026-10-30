@@ -2,8 +2,9 @@
 ## Title: Who's here?
 ## Notes: Shows the number of guild members in your current zone when you enter
 ## Author: Cricksu
-## Version: 1.0.1
+## Version: 1.0.2
 ## Category: Social
 ## IconTexture: Interface\AddOns\WhosHere\icon
+## SavedVariables: WhosHereDB
 
 WhosHere.lua
